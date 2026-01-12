@@ -1,8 +1,8 @@
-name: Auto Commit Random 24H (Multi Commit)
+name: Auto Commit Natural (Hourly)
 
 on:
   schedule:
-    - cron: "0 */2 * * *" # tiap 2 jam (12x sehari)
+    - cron: "0 * * * *" # tiap 1 jam
   workflow_dispatch:
 
 permissions:
@@ -15,24 +15,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Random delay (max 30 minutes)
+      - name: Random delay (max 10 minutes)
         run: |
-          DELAY=$((RANDOM % 1800))
-          echo "Sleep $DELAY seconds"
+          DELAY=$((RANDOM % 600))
           sleep $DELAY
 
       - name: Decide commit or skip
         run: |
           RAND=$((RANDOM % 100))
-          echo "RANDOM=$RAND" >> $GITHUB_ENV
+          echo "RAND=$RAND" >> $GITHUB_ENV
 
       - name: Update file
-        if: env.RANDOM < 60
+        if: env.RAND < 60
         run: |
           echo "- Update $(date '+%Y-%m-%d %H:%M:%S')" >> activity.md
 
       - name: Commit and push
-        if: env.RANDOM < 60
+        if: env.RAND < 60
         run: |
           git config user.name "Rafi Chandra"
           git config user.email "123737133+chandrarafi@users.noreply.github.com"
