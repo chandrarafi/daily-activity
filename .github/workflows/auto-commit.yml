@@ -1,8 +1,8 @@
-name: Auto Commit Natural (Every 20 Minutes)
+name: Auto Commit Natural (Hourly)
 
 on:
   schedule:
-    - cron: "*/20 * * * *" # tiap 20 menit
+    - cron: "0 * * * *" # tiap 1 jam
   workflow_dispatch:
 
 permissions:
@@ -26,12 +26,12 @@ jobs:
           echo "RAND=$RAND" >> $GITHUB_ENV
 
       - name: Update file
-        if: ${{ env.RAND < 60 }}
+        if: env.RAND < 60
         run: |
           echo "- Update $(date '+%Y-%m-%d %H:%M:%S')" >> activity.md
 
       - name: Commit and push
-        if: ${{ env.RAND < 60 }}
+        if: env.RAND < 60
         run: |
           git config user.name "Rafi Chandra"
           git config user.email "123737133+chandrarafi@users.noreply.github.com"
